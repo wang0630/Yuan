@@ -17,26 +17,25 @@ class Tcalculator:
                     y_axis = row.index("abs_Id")
                     vd_axis = row.index("Vd")
                 if row[0] == "DataValue":
-                    vgx2 = float(row[x_axis])
-                    vgy2 = float(row[y_axis])
                     vd = float(row[vd_axis])
                     if vd != -1 * 0.1 and vd != -1 * 0.05:
                         continue
-                    # calc scope
+                    vgx2 = float(row[x_axis])
+                    vgy2 = float(row[y_axis])
                     if vgy1 is not None:
                         delta_x = vgx2 - vgx1
                         delta_y = vgy2 - vgy1
-                        if delta_x != 0:
-                            slope = delta_y / delta_x
-                            if max_slope is None:
+                        if delta_x == 0:
+                            break
+                        # calculate slope
+                        slope = delta_y / delta_x
+                        if max_slope is None:
+                            max_slope = slope
+                            max_x, max_y, max_x1, max_y1 = vgx2, vgy2, vgx1, vgy1
+                        else:
+                            if abs(slope) > abs(max_slope):
                                 max_slope = slope
                                 max_x, max_y, max_x1, max_y1 = vgx2, vgy2, vgx1, vgy1
-                            else:
-                                if abs(slope) > abs(max_slope):
-                                    max_slope = slope
-                                    max_x, max_y, max_x1, max_y1 = vgx2, vgy2, vgx1, vgy1
-                        else:
-                            break
                     vgx1 = vgx2
                     vgy1 = vgy2
             print(max_slope)
