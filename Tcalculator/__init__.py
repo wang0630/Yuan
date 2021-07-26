@@ -2,12 +2,12 @@ import csv
 
 
 class Tcalculator:
-    def calculate(self, file_name):
+    def calculate(self, file_name, vd_constraints):
         print(file_name)
         x_axis = y_axis = None
         vgx1 = vgx2 = vgy1 = vgy2 = None
         max_slope = max_x = max_y = max_x1 = max_y1 = None
-        with open(file_name, newline='') as file:
+        with open(file_name, newline='', encoding="utf-8") as file:
             reader = csv.reader(file)
             for row in reader:
                 if row[0] == "DataName":
@@ -16,9 +16,9 @@ class Tcalculator:
                     x_axis = row.index("Vg")
                     y_axis = row.index("abs_Id")
                     vd_axis = row.index("Vd")
-                if row[0] == "DataValue":
+                elif row[0] == "DataValue":
                     vd = float(row[vd_axis])
-                    if vd != -1 * 0.1 and vd != -1 * 0.05:
+                    if vd_constraints and vd not in vd_constraints:
                         continue
                     vgx2 = float(row[x_axis])
                     vgy2 = float(row[y_axis])
@@ -44,3 +44,10 @@ class Tcalculator:
             b = max_y1 - (max_slope * max_x1)
             x_intercept = -1 * (b / max_slope)
             print(f"x_intercept: {x_intercept}")
+            return {
+                "x1": f"X1: {'{:0.3e}'.format(max_x1)}",
+                "y1": f"Y1: {'{:0.3e}'.format(max_y1)}",
+                "x2": f"X2: {'{:0.3e}'.format(max_x)}",
+                "y2": f"Y2: {'{:0.3e}'.format(max_y)}",
+                "x_intercept": f"X intercept {str(round(x_intercept, 4))}",
+            }
