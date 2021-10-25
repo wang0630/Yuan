@@ -26,8 +26,7 @@ class Tframe(tk.Frame):
             elm = tk.Entry(**config)
         else:
             raise Exception("component_type provided not available")
-        # if key_name in m:
-        #     return m[key_name]
+
         m[key_name] = elm
         return elm
 
@@ -98,12 +97,14 @@ class Tframe(tk.Frame):
             x2_label = self.register(ComponentType.label, "x2", self.create_config(result["x2"]))
             y2_label = self.register(ComponentType.label, "y2", self.create_config(result["y2"]))
             x_intercept_label = self.register(ComponentType.label, "x_intercept", self.create_config(result["x_intercept"]))
+            ss_label = self.register(ComponentType.label, "SS", self.create_config(result["SS"]))
 
             x_intercept_label.grid(row=3, columnspan=1, pady=5)
             x1_label.grid(row=4, column=0, pady=5)
             y1_label.grid(row=4, column=1, pady=5)
             x2_label.grid(row=5, column=0, pady=5)
             y2_label.grid(row=5, column=1, pady=5)
+            ss_label.grid(row=5, column=2, pady=5)
         except Exception as err:
             self.render_error_msg(err)
 
